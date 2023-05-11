@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+test:
+  url: 'http://localhost'
+
+mock:
+  server:
+    host: localhost
+    port: 9999
+
+cors:
+  url: ${CORS_URL:localhost}
