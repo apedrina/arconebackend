@@ -1,4 +1,4 @@
-package io.github.apedrina.web.model;
+package io.github.apedrina.web.controller.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StudentResponse {
+public class ArcOneResponse {
 
     private String status;
 

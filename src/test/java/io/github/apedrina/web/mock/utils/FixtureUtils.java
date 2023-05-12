@@ -1,7 +1,7 @@
 package io.github.apedrina.web.mock.utils;
 
 import io.github.apedrina.web.model.Student;
-import io.github.apedrina.web.model.StudentRequest;
+import io.github.apedrina.web.vo.StudentVO;
 
 public class FixtureUtils {
 
@@ -12,8 +12,8 @@ public class FixtureUtils {
     public static final String LAST_NAME = "Martin";
     public static final long PHONE = 2124567890l;
 
-    public static StudentRequest createStudentRequest() {
-        return StudentRequest.builder()
+    public static StudentVO createStudentRequest() {
+        return StudentVO.builder()
                 .address(ADDRESS)
                 .email(EMAIL)
                 .name(NAME)

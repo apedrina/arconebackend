@@ -1,7 +1,7 @@
 package io.github.apedrina.web.model;
 
 import io.github.apedrina.web.mock.utils.FixtureUtils;
-import io.github.apedrina.web.model.error.StudentBusinessException;
+import io.github.apedrina.web.model.error.BusinessException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class StudentTest {
 
     }
 
-    @Test(expected = StudentBusinessException.class)
+    @Test(expected = BusinessException.class)
     public void should_avoid_student_with_less_than_16_years_old() {
         var date = dateWithLessThan16();
         var student = FixtureUtils.createStudent();

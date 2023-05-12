@@ -1,11 +1,11 @@
 package io.github.apedrina.web.service;
 
 import io.github.apedrina.web.controller.StudentController;
+import io.github.apedrina.web.controller.payload.response.ArcOneResponse;
 import io.github.apedrina.web.model.Student;
-import io.github.apedrina.web.model.StudentRequest;
-import io.github.apedrina.web.model.StudentResponse;
-import io.github.apedrina.web.model.error.StudentBusinessException;
+import io.github.apedrina.web.model.error.BusinessException;
 import io.github.apedrina.web.repository.StudentRepository;
+import io.github.apedrina.web.vo.StudentVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,9 +29,9 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    public StudentResponse addUser(StudentRequest studentRequest) {
+    public ArcOneResponse addUser(StudentVO studentRequest) {
         if (studentRepository.findByAddress(studentRequest.getAddress()).size() > 0) {
-            throw new StudentBusinessException(StudentBusinessException.NOT_UNIQUE_ADDRESS);
+            throw new BusinessException(BusinessException.NOT_UNIQUE_ADDRESS);
 
         }
         var student = Student.builder()
@@ -48,14 +48,14 @@ public class StudentService {
 
     }
 
-    public void validar(StudentRequest studentRequest) {
+    public void validar(StudentVO studentRequest) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
         List<String> errors = new ArrayList<>();
-        Set<ConstraintViolation<StudentRequest>> validate = validator.validate(studentRequest);
+        Set<ConstraintViolation<StudentVO>> validate = validator.validate(studentRequest);
         if (validate.size() > 0) {
-            for (ConstraintViolation<StudentRequest> constraintViolation : validate) {
+            for (ConstraintViolation<StudentVO> constraintViolation : validate) {
                 log.error(constraintViolation.getMessage());
                 errors.add(constraintViolation.getMessage());
 
@@ -65,7 +65,7 @@ public class StudentService {
             adapter.validate(studentRequest, result);
 
             if (result.hasErrors()) {
-                throw new StudentBusinessException(errors.toString());
+                throw new BusinessException(errors.toString());
 
             }
 
@@ -75,9 +75,9 @@ public class StudentService {
 
     }
 
-    private boolean validacoesAdicionais(StudentRequest studentRequest) {
+    private boolean validacoesAdicionais(StudentVO studentRequest) {
         if (!isValidFormat(studentRequest.getDateOfBirth())) {
-            throw new StudentBusinessException("Date of birth not in valid format, valid patterns should be like: (yyyy-MM-dd)");
+            throw new BusinessException("Date of birth not in valid format, valid patterns should be like: (yyyy-MM-dd)");
 
         }
 
@@ -95,8 +95,8 @@ public class StudentService {
         }
     }
 
-    private StudentResponse buildStudentResponse(String msg) {
-        return StudentResponse.builder()
+    private ArcOneResponse buildStudentResponse(String msg) {
+        return ArcOneResponse.builder()
                 .status("201")
                 .statusDetails(msg)
                 .build();

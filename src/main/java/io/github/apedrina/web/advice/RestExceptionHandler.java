@@ -1,10 +1,10 @@
 package io.github.apedrina.web.advice;
 
 import io.github.apedrina.web.controller.StudentController;
-import io.github.apedrina.web.model.StudentRequest;
-import io.github.apedrina.web.model.StudentResponse;
+import io.github.apedrina.web.controller.payload.response.ArcOneResponse;
+import io.github.apedrina.web.model.error.BusinessException;
 import io.github.apedrina.web.model.error.GenericException;
-import io.github.apedrina.web.model.error.StudentBusinessException;
+import io.github.apedrina.web.vo.StudentVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +25,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        StudentRequest studentRequest = (StudentRequest) request.getAttribute(StudentController.STUDENT_REQUEST, RequestAttributes.SCOPE_REQUEST);
+        StudentVO studentRequest = (StudentVO) request.getAttribute(StudentController.STUDENT_REQUEST, RequestAttributes.SCOPE_REQUEST);
         final List<String> errors = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach(e -> {
             errors.add(e.getDefaultMessage());
 
         });
-        StudentResponse studentResponse = new StudentResponse();
+        ArcOneResponse studentResponse = new ArcOneResponse();
         studentResponse.setStatusDetails(errors.toString());
         studentResponse.setStatus(status.toString());
 
@@ -40,9 +40,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(GenericException.class)
-    public ResponseEntity<StudentResponse> handleAdapterGenericExceptionException(GenericException ex, WebRequest request) {
-        StudentRequest studentRequest = (StudentRequest) request.getAttribute(StudentController.STUDENT_REQUEST, RequestAttributes.SCOPE_REQUEST);
-        StudentResponse studentResponse = new StudentResponse();
+    public ResponseEntity<ArcOneResponse> handleAdapterGenericExceptionException(GenericException ex, WebRequest request) {
+        StudentVO studentRequest = (StudentVO) request.getAttribute(StudentController.STUDENT_REQUEST, RequestAttributes.SCOPE_REQUEST);
+        ArcOneResponse studentResponse = new ArcOneResponse();
         studentResponse.setStatus("500");
 
         if (ex.getMessage().equalsIgnoreCase(EC_NOT_FOUND)) {
@@ -59,11 +59,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
-    @ExceptionHandler(StudentBusinessException.class)
-    public ResponseEntity<StudentResponse> handleStudentBussinesException(StudentBusinessException ex, WebRequest request) {
-        StudentRequest studentRequest = (StudentRequest) request.getAttribute(StudentController.STUDENT_REQUEST, RequestAttributes.SCOPE_REQUEST);
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ArcOneResponse> handleStudentBussinesException(BusinessException ex, WebRequest request) {
+        StudentVO studentRequest = (StudentVO) request.getAttribute(StudentController.STUDENT_REQUEST, RequestAttributes.SCOPE_REQUEST);
 
-        StudentResponse studentResponse = new StudentResponse();
+        ArcOneResponse studentResponse = new ArcOneResponse();
         studentResponse.setStatusDetails(ex.getMessage());
         studentResponse.setStatus("400");
 

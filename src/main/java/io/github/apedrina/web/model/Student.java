@@ -1,7 +1,7 @@
 package io.github.apedrina.web.model;
 
+import io.github.apedrina.web.model.error.BusinessException;
 import io.github.apedrina.web.model.error.GenericException;
-import io.github.apedrina.web.model.error.StudentBusinessException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -62,7 +62,7 @@ public class Student {
         LocalDate givenDate = zone.toLocalDate();
         Period period = Period.between(givenDate, LocalDate.now());
         if (period.getYears() < 16) {
-            throw new StudentBusinessException(StudentBusinessException.AGE_NOT_ALLOWED);
+            throw new BusinessException(BusinessException.AGE_NOT_ALLOWED);
 
         }
         this.dateOfBirth = date;

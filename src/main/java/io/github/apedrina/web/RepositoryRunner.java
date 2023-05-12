@@ -31,6 +31,9 @@ public class RepositoryRunner implements CommandLineRunner {
     private CourseRepository courseRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -96,6 +99,27 @@ public class RepositoryRunner implements CommandLineRunner {
             Role savedProfile = profileRepository.save(profile);
 
             log.info("Profile: {}", savedProfile);
+
+            var roleUser = Role.builder()
+                    .name(ERole.ROLE_USER)
+                    .build();
+            roleRepository.save(roleUser);
+
+            log.info("Role: {}", roleUser);
+
+            var roleModerator = Role.builder()
+                    .name(ERole.ROLE_MODERATOR)
+                    .build();
+            roleRepository.save(roleModerator);
+
+            log.info("Role: {}", roleModerator);
+
+            var roleAdmin = Role.builder()
+                    .name(ERole.ROLE_ADMIN)
+                    .build();
+            roleRepository.save(roleAdmin);
+
+            log.info("Role: {}", roleAdmin);
 
         }
 

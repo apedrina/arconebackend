@@ -1,12 +1,12 @@
 package io.github.apedrina.web.controller;
 
+import io.github.apedrina.web.controller.payload.response.ArcOneResponse;
 import io.github.apedrina.web.mock.MockServerManager;
 import io.github.apedrina.web.mock.MockUtilTest;
 import io.github.apedrina.web.mock.utils.FixtureJsonUtils;
 import io.github.apedrina.web.mock.utils.FixtureUtils;
-import io.github.apedrina.web.model.StudentRequest;
-import io.github.apedrina.web.model.StudentResponse;
 import io.github.apedrina.web.service.StudentService;
+import io.github.apedrina.web.vo.StudentVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockserver.client.MockServerClient;
@@ -41,7 +41,7 @@ public class StudentControllerTest extends MockUtilTest {
     @Test
     public void should_retrieve_all_students() {
         String uri = url + STUDENT_ADD_URI;
-        StudentRequest request = FixtureUtils.createStudentRequest();
+        StudentVO request = FixtureUtils.createStudentRequest();
         request.setAddress("XX");
 
         HttpEntity httpEntity = new HttpEntity(request);
@@ -56,11 +56,11 @@ public class StudentControllerTest extends MockUtilTest {
                         .withBody(json(FixtureJsonUtils.studentJson())));
 
 
-        ResponseEntity<StudentResponse> entity = this.restTemplate.exchange(
+        ResponseEntity<ArcOneResponse> entity = this.restTemplate.exchange(
                 uri,
                 HttpMethod.POST,
                 httpEntity,
-                new ParameterizedTypeReference<StudentResponse>() {
+                new ParameterizedTypeReference<ArcOneResponse>() {
                 });
 
         assertEquals(entity.getStatusCode(), HttpStatus.CREATED);
@@ -70,7 +70,7 @@ public class StudentControllerTest extends MockUtilTest {
     @Test
     public void should_add_a_student() {
         String uri = url + STUDENT_ADD_URI;
-        StudentRequest request = FixtureUtils.createStudentRequest();
+        StudentVO request = FixtureUtils.createStudentRequest();
         request.setAddress("XX");
 
         HttpEntity httpEntity = new HttpEntity(request);
@@ -85,11 +85,11 @@ public class StudentControllerTest extends MockUtilTest {
                         .withBody(""));
 
 
-        ResponseEntity<StudentResponse> entity = this.restTemplate.exchange(
+        ResponseEntity<ArcOneResponse> entity = this.restTemplate.exchange(
                 uri,
                 HttpMethod.POST,
                 httpEntity,
-                new ParameterizedTypeReference<StudentResponse>() {
+                new ParameterizedTypeReference<ArcOneResponse>() {
                 });
 
         assertEquals(entity.getStatusCode(), HttpStatus.CREATED);
@@ -99,7 +99,7 @@ public class StudentControllerTest extends MockUtilTest {
     @Test(expected = HttpClientErrorException.class)
     public void should_not_allowed_add_a_student_with_repetead_address() {
         String uri = url + STUDENT_ADD_URI;
-        StudentRequest request = FixtureUtils.createStudentRequest();
+        StudentVO request = FixtureUtils.createStudentRequest();
 
         HttpEntity httpEntity = new HttpEntity(request);
 
@@ -113,11 +113,11 @@ public class StudentControllerTest extends MockUtilTest {
                         .withBody(""));
 
 
-        ResponseEntity<StudentResponse> entity = this.restTemplate.exchange(
+        ResponseEntity<ArcOneResponse> entity = this.restTemplate.exchange(
                 uri,
                 HttpMethod.POST,
                 httpEntity,
-                new ParameterizedTypeReference<StudentResponse>() {
+                new ParameterizedTypeReference<ArcOneResponse>() {
                 });
 
     }

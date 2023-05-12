@@ -1,8 +1,8 @@
 package io.github.apedrina.web.controller;
 
-import io.github.apedrina.web.model.StudentRequest;
-import io.github.apedrina.web.model.StudentResponse;
+import io.github.apedrina.web.controller.payload.response.ArcOneResponse;
 import io.github.apedrina.web.service.StudentService;
+import io.github.apedrina.web.vo.StudentVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
-@CrossOrigin(origins = {"${cors.url}"}, maxAge = 3600)
+@CrossOrigin(origins = {"*"}, maxAge = 3600)
 @RestController
 @RequestMapping("/arcone/user")
 @Slf4j
@@ -36,11 +36,11 @@ public class UserController {
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = HttpStatus.class)))
             })
-    public ResponseEntity<StudentResponse> addStudent(@RequestBody StudentRequest studentRequest, WebRequest webRequest) {
+    public ResponseEntity<ArcOneResponse> addStudent(@RequestBody StudentVO studentRequest, WebRequest webRequest) {
         log.info("BrotoRequest payload recebido: " + studentRequest);
         webRequest.setAttribute(STUDENT_REQUEST, studentRequest, RequestAttributes.SCOPE_REQUEST);
 
-        return new ResponseEntity<StudentResponse>(studentService.addUser(studentRequest), HttpStatus.CREATED);
+        return new ResponseEntity<ArcOneResponse>(studentService.addUser(studentRequest), HttpStatus.CREATED);
 
     }
 
@@ -54,7 +54,7 @@ public class UserController {
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = HttpStatus.class)))
             })
-    public ResponseEntity<StudentResponse> getStudents(@RequestBody StudentRequest brotoRequest, WebRequest webRequest) {
+    public ResponseEntity<ArcOneResponse> getStudents(@RequestBody StudentVO brotoRequest, WebRequest webRequest) {
         log.info("BrotoRequest payload recebido: " + brotoRequest);
 
         webRequest.setAttribute(STUDENT_REQUEST, brotoRequest, RequestAttributes.SCOPE_REQUEST);

@@ -11,13 +11,6 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 @SpringBootApplication
 public class ArcOneWebApplication {
 
-    private static final String ADDRESS = "1234 NW Bobcat Lane, St. Robert, MO 65584-5678";
-    private static final String DATE = "1980-08-23";
-    private static final String EMAIL = "robertson@gmail.com";
-    private static final String NAME = "Robertson";
-    private static final String LAST_NAME = "Martin";
-    private static final long PHONE = 2124567890l;
-
     public static void main(String[] args) {
 
         SpringApplication.run(ArcOneWebApplication.class, args);

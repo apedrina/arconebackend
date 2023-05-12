@@ -1,4 +1,4 @@
-package io.github.apedrina.web.model;
+package io.github.apedrina.web.vo;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class StudentRequest {
+public class StudentVO {
 
     private static final String PHONE_INVALID = "Phone number cannot be empty or null";
     private static final String NAME_INVALID = "Name cannot be empty or null";
