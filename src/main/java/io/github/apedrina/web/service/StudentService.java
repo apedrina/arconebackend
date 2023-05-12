@@ -21,6 +21,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -100,6 +101,19 @@ public class StudentService {
                 .status("201")
                 .statusDetails(msg)
                 .build();
+
+    }
+
+    public List<StudentVO> getAll() {
+        return studentRepository.findAll().stream()
+                .map(student -> StudentVO.builder()
+                        .address(student.getAddress())
+                        .email(student.getEmail())
+                        .name(student.getName())
+                        .phoneNumber(student.getPhoneNumber())
+                        .lastName(student.getLastName())
+                        .dateOfBirth(student.getDateOfBirth())
+                        .build()).collect(Collectors.toList());
 
     }
 

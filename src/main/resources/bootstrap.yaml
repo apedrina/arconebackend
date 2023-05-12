@@ -19,6 +19,6 @@ management:
       show-details: always
     web:
       exposure:
-        include: ${ACTUATOR_ENDPOINTS:health,loggers,httptrace,mappings}
+        include: health
 
 

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/arcone/student")
@@ -37,7 +39,6 @@ public class StudentController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = HttpStatus.class)))
             })
     public ResponseEntity<ArcOneResponse> addStudent(@RequestBody StudentVO studentRequest, WebRequest webRequest) {
-        log.info("BrotoRequest payload recebido: " + studentRequest);
         webRequest.setAttribute(STUDENT_REQUEST, studentRequest, RequestAttributes.SCOPE_REQUEST);
 
         return new ResponseEntity<ArcOneResponse>(studentService.addUser(studentRequest), HttpStatus.CREATED);
@@ -54,14 +55,12 @@ public class StudentController {
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = HttpStatus.class)))
             })
-    public ResponseEntity<ArcOneResponse> getStudents(@RequestBody StudentVO brotoRequest, WebRequest webRequest) {
-        log.info("BrotoRequest payload recebido: " + brotoRequest);
+    public ResponseEntity<List<StudentVO>> getStudents(@RequestBody StudentVO studentVO, WebRequest webRequest) {
+        webRequest.setAttribute(STUDENT_REQUEST, studentVO, RequestAttributes.SCOPE_REQUEST);
 
-        webRequest.setAttribute(STUDENT_REQUEST, brotoRequest, RequestAttributes.SCOPE_REQUEST);
+        studentService.validar(studentVO);
 
-        studentService.validar(brotoRequest);
-
-        return null;//new ResponseEntity<BrotoResponse>(null, HttpStatus.CREATED);
+        return new ResponseEntity<List<StudentVO>>(studentService.getAll(), HttpStatus.CREATED);
 
     }
 

@@ -1,27 +1,29 @@
 # Arcone Web
 
-MS responsible for handler arcone-web-angular requests.
+Monolithic responsible for handler arcone-web-angular requests.
 
 ### Build
 
 To build the app use the follow script:
 
-```<root>/script/build.bat```
+```<root>/script/build.bat or build.sh```
 
 ### Run
 
 To run the app use the follow script:
 
-```<root>/script/run.bat```
+```<root>/script/run.bat or run.sh```
 
 ### Debug
 
 To build the app use the follow script:
 
-```<root>/script/debug.bat```
+```<root>/script/debug.bat or debug.sh```
 
-### Run Local Enviroment
+### Swagger
 
-To run all MSs and emulate the Kafka cluster (<root>/script/run.bat) run the class:
+http://localhost:8080/swagger-ui/index.html
 
-```StartMS.java```
+### Health check
+
+http://localhost:8080/actuator/health

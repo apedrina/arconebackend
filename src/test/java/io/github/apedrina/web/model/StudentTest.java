@@ -12,7 +12,7 @@ public class StudentTest {
 
     @Test
     public void should_allow_student_with_more_than_16_years_old() {
-        var student = FixtureUtils.createStudentRequest();
+        var student = FixtureUtils.createStudentVO();
 
         var date = "1980-08-23";
 

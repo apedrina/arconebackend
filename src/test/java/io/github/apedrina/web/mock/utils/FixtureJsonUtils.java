@@ -16,8 +16,16 @@ public class FixtureJsonUtils {
     private static ObjectMapper objectMapper = objectMapper();
 
     public static String studentJson() {
-        var request = FixtureUtils.createStudentRequest();
+        return toStr(FixtureUtils.createStudentVO());
 
+    }
+
+    public static String userVO() {
+        return toStr(FixtureUtils.createUserVO());
+
+    }
+
+    private static String toStr(Object request) {
         try {
             return objectMapper.writeValueAsString(request);
 
@@ -25,7 +33,5 @@ public class FixtureJsonUtils {
             throw new RuntimeException(e);
 
         }
-
     }
-
 }

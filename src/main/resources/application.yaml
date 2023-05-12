@@ -15,7 +15,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
 
 app:
-  jwtSecret: bezKoderSecretKey
+  jwtSecret: apedrinaSecretKey
   jwtExpirationMs: 86400000
 
 logging:

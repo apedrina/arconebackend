@@ -1,7 +1,6 @@
 package io.github.apedrina.web.model;
 
 import io.github.apedrina.web.model.error.BusinessException;
-import io.github.apedrina.web.model.error.GenericException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -56,7 +55,7 @@ public class Student {
         try {
             instant = stringToDate(date).toInstant();
         } catch (ParseException e) {
-            throw new GenericException(e);
+            throw new BusinessException(e);
         }
         ZonedDateTime zone = instant.atZone(ZoneId.systemDefault());
         LocalDate givenDate = zone.toLocalDate();

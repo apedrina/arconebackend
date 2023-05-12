@@ -1,8 +1,8 @@
 package io.github.apedrina.web.controller;
 
 import io.github.apedrina.web.controller.payload.response.ArcOneResponse;
-import io.github.apedrina.web.service.StudentService;
-import io.github.apedrina.web.vo.StudentVO;
+import io.github.apedrina.web.service.CourseService;
+import io.github.apedrina.web.vo.CourseVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.WebRequest;
+
+import java.util.List;
 
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 @RestController
@@ -21,44 +21,38 @@ import org.springframework.web.context.request.WebRequest;
 @Slf4j
 public class CourseController {
 
-    public static final String STUDENT_REQUEST = "studentRequest";
-
     @Autowired
-    private StudentService studentService;
+    private CourseService courseService;
 
     @PostMapping
-    @Operation(summary = "Add a student", description = "Add a new student",
+    @Operation(summary = "Add a course", description = "Add a new course",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "User added with success", content =
+                    @ApiResponse(responseCode = "201", description = "Course added with success", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseEntity.class))),
                     @ApiResponse(responseCode = "400", description = "Bad request", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = HttpStatus.class))),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = HttpStatus.class)))
             })
-    public ResponseEntity<ArcOneResponse> addStudent(@RequestBody StudentVO studentRequest, WebRequest webRequest) {
-        webRequest.setAttribute(STUDENT_REQUEST, studentRequest, RequestAttributes.SCOPE_REQUEST);
+    public ResponseEntity<ArcOneResponse> addCourse(@RequestBody CourseVO courseVO) {
 
-        return new ResponseEntity<ArcOneResponse>(studentService.addUser(studentRequest), HttpStatus.CREATED);
+        return new ResponseEntity<ArcOneResponse>(courseService.addCourse(courseVO), HttpStatus.CREATED);
 
     }
 
     @GetMapping
-    @Operation(summary = "Get a list of students", description = "Get all students",
+    @Operation(summary = "Get a list of courses", description = "Get all courses",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Users retrieved with success", content =
+                    @ApiResponse(responseCode = "201", description = "Courses retrieved with success", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseEntity.class))),
                     @ApiResponse(responseCode = "400", description = "Bad request", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = HttpStatus.class))),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = HttpStatus.class)))
             })
-    public ResponseEntity<ArcOneResponse> getStudents(@RequestBody StudentVO brotoRequest, WebRequest webRequest) {
-        webRequest.setAttribute(STUDENT_REQUEST, brotoRequest, RequestAttributes.SCOPE_REQUEST);
+    public ResponseEntity<?> getCourses(@RequestBody CourseVO courseVO) {
 
-        studentService.validar(brotoRequest);
-
-        return null;//new ResponseEntity<BrotoResponse>(null, HttpStatus.CREATED);
+        return new ResponseEntity<List<CourseVO>>(courseService.getAll(), HttpStatus.CREATED);
 
     }
 

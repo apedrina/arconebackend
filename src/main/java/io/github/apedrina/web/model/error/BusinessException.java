@@ -6,6 +6,8 @@ public class BusinessException extends RuntimeException {
     public static final String NOT_UNIQUE_ADDRESS = "The address already exist in our DataBase";
     public static final String NOT_UNIQUE_COURSE = "The Course name should be unique";
 
+    public static final String STUDENT_NOT_FOUND = "The Student not found";
+
     public BusinessException() {
 
     }

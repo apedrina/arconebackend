@@ -14,6 +14,9 @@ import java.util.Optional;
 @Component
 public class RepositoryRunner implements CommandLineRunner {
 
+    public static final String FIRST_USERNAME = "test";
+    public static final String FIRST_USER_EMAIL = "test@gmail.com";
+
     private static final String ADDRESS = "1234 NW Bobcat Lane, St. Robert, MO 65584-5678";
     private static final String DATE = "1980-08-23";
     private static final String EMAIL = "robertson@gmail.com";
@@ -84,8 +87,8 @@ public class RepositoryRunner implements CommandLineRunner {
             log.info("Course: {}", savedCourse);
 
             var user = User.builder()
-                    .username("test")
-                    .email("test@gmail.com")
+                    .username(FIRST_USERNAME)
+                    .email(FIRST_USER_EMAIL)
                     .build();
 
             User savedUser = userRepository.save(user);

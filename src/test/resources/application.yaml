@@ -13,3 +13,7 @@ mock:
 
 cors:
   url: ${CORS_URL:localhost}
+
+app:
+  jwtSecret: apedrinaSecretKey
+  jwtExpirationMs: 86400000
