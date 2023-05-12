@@ -8,6 +8,7 @@ import io.github.apedrina.web.mock.MockServerManager;
 import io.github.apedrina.web.mock.MockUtilTest;
 import io.github.apedrina.web.mock.utils.FixtureJsonUtils;
 import io.github.apedrina.web.mock.utils.FixtureUtils;
+import io.github.apedrina.web.vo.CourseVO;
 import io.github.apedrina.web.vo.StudentVO;
 import io.github.apedrina.web.vo.UserVO;
 import org.junit.FixMethodOrder;
@@ -26,9 +27,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockserver.model.JsonBody.json;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class StudentControllerTest extends MockUtilTest {
+public class CourseControllerTest extends MockUtilTest {
 
-    private static final String STUDENT_ADD_URI = "/arcone/student";
+    private static final String URI = "/arcone/course";
 
     @Autowired
     MockServerManager mockServerManager;
@@ -38,11 +39,11 @@ public class StudentControllerTest extends MockUtilTest {
     JwtResponse jwtResponse;
 
     @Test
-    public void Ashould_add_a_student() {
+    public void Ashould_add_a_course() {
         SignupRequest signupRequest = SignupRequest.builder()
-                .username("user1")
+                .username("userCourse1")
                 .password("123456")
-                .email("user1@gmail.com")
+                .email("usercourse1@gmail.com")
                 .build();
         register = register(signupRequest);
 
@@ -52,9 +53,11 @@ public class StudentControllerTest extends MockUtilTest {
                 .build();
         jwtResponse = login(loginRequest);
 
-        String uri = url + STUDENT_ADD_URI;
-        StudentVO request = FixtureUtils.createStudentVO();
-        request.setAddress("user1Address");
+        String uri = url + URI;
+        CourseVO request = CourseVO.builder()
+                .name("Test Course")
+                .description("description")
+                .build();
 
         HttpHeaders headers = createHeader(jwtResponse);
         HttpEntity httpEntity = new HttpEntity(request, headers);
@@ -69,11 +72,11 @@ public class StudentControllerTest extends MockUtilTest {
                         .withBody(""));
 
 
-        ResponseEntity<ArcOneResponse> entity = this.restTemplate.exchange(
+        ResponseEntity<CourseVO> entity = this.restTemplate.exchange(
                 uri,
                 HttpMethod.POST,
                 httpEntity,
-                new ParameterizedTypeReference<ArcOneResponse>() {
+                new ParameterizedTypeReference<CourseVO>() {
                 });
 
         assertEquals(entity.getStatusCode(), HttpStatus.CREATED);
@@ -81,15 +84,17 @@ public class StudentControllerTest extends MockUtilTest {
     }
 
     @Test(expected = HttpClientErrorException.class)
-    public void Bshould_not_allowed_add_a_student_with_repetead_address() {
-        String uri = url + STUDENT_ADD_URI;
-        StudentVO request = FixtureUtils.createStudentVO();
-        request.setAddress("user1Address");
+    public void Bshould_not_allowed_add_a_course_with_repetead_name() {
+        String uri = url + URI;
+        CourseVO request = CourseVO.builder()
+                .name("Test Course")
+                .description("description")
+                .build();
 
         SignupRequest signupRequest = SignupRequest.builder()
-                .username("user2")
+                .username("userCourse2")
                 .password("123456")
-                .email("user2@gmail.com")
+                .email("usercourse1@gmail.com")
                 .build();
         register = register(signupRequest);
 
@@ -121,57 +126,16 @@ public class StudentControllerTest extends MockUtilTest {
 
     }
 
-    @Test(expected = HttpClientErrorException.class)
-    public void Cshould_not_allowed_add_a_student_without_all_required_fields() {
-        String uri = url + STUDENT_ADD_URI;
-        StudentVO request = FixtureUtils.createStudentVO();
-        request.setDateOfBirth(null);
-
-        SignupRequest signupRequest = SignupRequest.builder()
-                .username("userC")
-                .password("123456")
-                .email("userC@gmail.com")
-                .build();
-        register = register(signupRequest);
-
-        LoginRequest loginRequest = LoginRequest.builder()
-                .username(signupRequest.getUsername())
-                .password(signupRequest.getPassword())
-                .build();
-        jwtResponse = login(loginRequest);
-
-        HttpHeaders headers = createHeader(jwtResponse);
-        HttpEntity httpEntity = new HttpEntity(request, headers);
-
-        MockServerClient client = mockServerManager.getClient();
-        client.when(HttpRequest.request()
-                        .withMethod("POST")
-                        .withPath(uri))
-                .respond(HttpResponse.response()
-                        .withStatusCode(HttpStatus.ACCEPTED.value())
-                        .withHeader(Header.header("Content-Type", "application/json")));
-
-
-        ResponseEntity<ArcOneResponse> entity = this.restTemplate.exchange(
-                uri,
-                HttpMethod.POST,
-                httpEntity,
-                new ParameterizedTypeReference<ArcOneResponse>() {
-                });
-
-    }
-
-
     @Test
-    public void Dshould_retrieve_all_students() {
-        String uri = url + STUDENT_ADD_URI;
+    public void Cshould_retrieve_all_courses() {
+        String uri = url + URI;
         StudentVO request = FixtureUtils.createStudentVO();
         request.setAddress("addressAll");
 
         SignupRequest signupRequest = SignupRequest.builder()
-                .username("user3")
+                .username("userCourse3")
                 .password("123456")
-                .email("user3@gmail.com")
+                .email("usercourse3@gmail.com")
                 .build();
         register = register(signupRequest);
 

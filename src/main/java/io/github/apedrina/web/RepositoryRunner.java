@@ -70,7 +70,7 @@ public class RepositoryRunner implements CommandLineRunner {
             var logObj = Log.builder()
                     .description("Testing logs...")
                     .student(newStudent)
-                    .type("Watching_Videos")
+                    .type(ELogType.WATCHING_VIDEOS)
                     .build();
 
             Log logSaved = logRepository.save(logObj);

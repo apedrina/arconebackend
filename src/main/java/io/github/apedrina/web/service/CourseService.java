@@ -4,6 +4,7 @@ import io.github.apedrina.web.controller.payload.response.ArcOneResponse;
 import io.github.apedrina.web.model.Course;
 import io.github.apedrina.web.model.error.BusinessException;
 import io.github.apedrina.web.repository.CourseRepository;
+import io.github.apedrina.web.repository.StudentRepository;
 import io.github.apedrina.web.vo.CourseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,22 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public ArcOneResponse addCourse(CourseVO courseVO) {
+    @Autowired
+    private StudentRepository studentRepository;
+
+    public void validateRegisterStudent(Long idStudent){
+        var studentOptional = studentRepository.findById(idStudent);
+        if (studentOptional.isPresent()){
+            var studentEntity = studentOptional.get();
+            if (studentEntity.getStudentsCourses().size() >= 3){
+                throw new BusinessException(BusinessException.STUDENT_DOING_MORE_THAN_3_COURSES);
+            }
+        } else {
+            throw new BusinessException(BusinessException.STUDENT_NOT_FOUND);
+        }
+    }
+
+    public CourseVO addCourse(CourseVO courseVO) {
         if (courseRepository.findByName(courseVO.getName()).size() > 0) {
             throw new BusinessException(BusinessException.NOT_UNIQUE_COURSE);
 
@@ -29,10 +45,13 @@ public class CourseService {
                 .description(courseVO.getDescription())
                 .build();
 
+        Course savedCourse = courseRepository.save(courseEntity);
 
-        courseRepository.save(courseEntity);
-
-        return buildResponse("Course added with success");
+        return CourseVO.builder()
+                .id(savedCourse.getId())
+                .description(savedCourse.getDescription())
+                .name(savedCourse.getName())
+                .build();
 
     }
 

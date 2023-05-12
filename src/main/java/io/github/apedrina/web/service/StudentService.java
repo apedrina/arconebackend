@@ -1,26 +1,17 @@
 package io.github.apedrina.web.service;
 
-import io.github.apedrina.web.controller.StudentController;
-import io.github.apedrina.web.controller.payload.response.ArcOneResponse;
 import io.github.apedrina.web.model.Student;
 import io.github.apedrina.web.model.error.BusinessException;
 import io.github.apedrina.web.repository.StudentRepository;
 import io.github.apedrina.web.vo.StudentVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +21,7 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    public ArcOneResponse addUser(StudentVO studentRequest) {
+    public StudentVO addStudent(StudentVO studentRequest) {
         if (studentRepository.findByAddress(studentRequest.getAddress()).size() > 0) {
             throw new BusinessException(BusinessException.NOT_UNIQUE_ADDRESS);
 
@@ -43,46 +34,29 @@ public class StudentService {
                 .address(studentRequest.getAddress())
                 .build();
 
-        studentRepository.save(student);
+        Student savedStudent = studentRepository.save(student);
 
-        return buildStudentResponse("User added with success");
+        return StudentVO.builder()
+                .address(savedStudent.getAddress())
+                .dateOfBirth(savedStudent.getDateOfBirth())
+                .lastName(savedStudent.getLastName())
+                .phoneNumber(savedStudent.getPhoneNumber())
+                .name(savedStudent.getName())
+                .id(savedStudent.getId())
+                .email(savedStudent.getEmail())
+                .build();
 
     }
 
-    public void validar(StudentVO studentRequest) {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        List<String> errors = new ArrayList<>();
-        Set<ConstraintViolation<StudentVO>> validate = validator.validate(studentRequest);
-        if (validate.size() > 0) {
-            for (ConstraintViolation<StudentVO> constraintViolation : validate) {
-                log.error(constraintViolation.getMessage());
-                errors.add(constraintViolation.getMessage());
-
-            }
-            BeanPropertyBindingResult result = new BeanPropertyBindingResult(studentRequest, StudentController.STUDENT_REQUEST);
-            SpringValidatorAdapter adapter = new SpringValidatorAdapter(validator);
-            adapter.validate(studentRequest, result);
-
-            if (result.hasErrors()) {
-                throw new BusinessException(errors.toString());
-
-            }
-
+    //TODO put to working the @Valid annotation
+    public void validate(StudentVO studentRequest) {
+        if (StringUtils.isEmpty(studentRequest.getDateOfBirth())){
+            throw new BusinessException(StudentVO.DOB_INVALID);
         }
-
-        validacoesAdicionais(studentRequest);
-
-    }
-
-    private boolean validacoesAdicionais(StudentVO studentRequest) {
         if (!isValidFormat(studentRequest.getDateOfBirth())) {
-            throw new BusinessException("Date of birth not in valid format, valid patterns should be like: (yyyy-MM-dd)");
+            throw new BusinessException("[Date of birth not in valid format, valid patterns should be like: (yyyy-MM-dd)]");
 
         }
-
-        return true;
 
     }
 
@@ -94,14 +68,6 @@ public class StudentService {
         } catch (DateTimeParseException dtpe) {
             return false;
         }
-    }
-
-    private ArcOneResponse buildStudentResponse(String msg) {
-        return ArcOneResponse.builder()
-                .status("201")
-                .statusDetails(msg)
-                .build();
-
     }
 
     public List<StudentVO> getAll() {

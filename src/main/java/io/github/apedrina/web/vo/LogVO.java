@@ -1,5 +1,6 @@
 package io.github.apedrina.web.vo;
 
+import io.github.apedrina.web.model.ELogType;
 import lombok.*;
 
 @Data
@@ -17,6 +18,6 @@ public class LogVO {
 
     private String description;
 
-    private String type;
+    private ELogType type;
 
 }

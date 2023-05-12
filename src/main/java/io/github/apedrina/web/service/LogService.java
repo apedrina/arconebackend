@@ -27,10 +27,11 @@ public class LogService {
         var studentEntity = studentRepository.findById(logVO.getIdStudent());
 
         if (studentEntity.isPresent()) {
+            var student = studentEntity.get();
             var logEntity = Log.builder()
                     .type(logVO.getType())
                     .description(logVO.getDescription())
-                    .student(studentEntity.get()).build();
+                    .student(student).build();
 
             logRepository.save(logEntity);
 

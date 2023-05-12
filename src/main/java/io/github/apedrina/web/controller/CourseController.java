@@ -1,6 +1,5 @@
 package io.github.apedrina.web.controller;
 
-import io.github.apedrina.web.controller.payload.response.ArcOneResponse;
 import io.github.apedrina.web.service.CourseService;
 import io.github.apedrina.web.vo.CourseVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,9 +33,9 @@ public class CourseController {
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
                     @Content(mediaType = "application/json", schema = @Schema(implementation = HttpStatus.class)))
             })
-    public ResponseEntity<ArcOneResponse> addCourse(@RequestBody CourseVO courseVO) {
+    public ResponseEntity<?> addCourse(@RequestBody CourseVO courseVO) {
 
-        return new ResponseEntity<ArcOneResponse>(courseService.addCourse(courseVO), HttpStatus.CREATED);
+        return new ResponseEntity<CourseVO>(courseService.addCourse(courseVO), HttpStatus.CREATED);
 
     }
 

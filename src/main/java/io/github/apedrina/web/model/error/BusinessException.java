@@ -7,6 +7,7 @@ public class BusinessException extends RuntimeException {
     public static final String NOT_UNIQUE_COURSE = "The Course name should be unique";
 
     public static final String STUDENT_NOT_FOUND = "The Student not found";
+    public static final String STUDENT_DOING_MORE_THAN_3_COURSES = "Student doing more thant 3 courses at same time";
 
     public BusinessException() {
 

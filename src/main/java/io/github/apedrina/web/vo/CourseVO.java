@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class CourseVO {
 
+    private long id;
+
     private String name;
 
     private String description;

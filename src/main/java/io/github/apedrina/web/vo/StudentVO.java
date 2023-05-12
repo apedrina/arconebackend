@@ -1,6 +1,9 @@
 package io.github.apedrina.web.vo;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotEmpty;
@@ -10,15 +13,17 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class StudentVO {
 
-    private static final String PHONE_INVALID = "Phone number cannot be empty or null";
-    private static final String NAME_INVALID = "Name cannot be empty or null";
-    private static final String LASTNAME_INVALID = "Lastname cannot be empyt or null";
-    private static final String DOB_INVALID = "Date of birth cannot be empyt or null";
-    private static final String ADDRESS_INVALID = "Address cannot be empyt or null";
-    private static final String EMAIL_INVALID = "Email cannot be empty or null";
+    public static final String PHONE_INVALID = "[Phone number cannot be empty or null]";
+    public static final String NAME_INVALID = "[Name cannot be empty or null]";
+    public static final String LASTNAME_INVALID = "[Lastname cannot be empyt or null]";
+    public static final String DOB_INVALID = "[Date of birth cannot be empyt or null]";
+    public static final String ADDRESS_INVALID = "[Address cannot be empyt or null]";
+    public static final String EMAIL_INVALID = "[Email cannot be empty or null]";
+
+
+    private long id;
 
     @NotNull(message = NAME_INVALID)
     @NotEmpty(message = NAME_INVALID)

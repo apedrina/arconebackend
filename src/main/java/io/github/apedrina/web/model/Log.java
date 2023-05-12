@@ -27,8 +27,9 @@ public class Log {
     @Column(name = "description", length = 5000)
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 5000)
-    private String type;
+    private ELogType type;
 
 
 }
